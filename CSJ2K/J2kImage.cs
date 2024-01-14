@@ -1049,7 +1049,7 @@ namespace CSJ2K
                 new string[]
                     {
                         "nocolorspace", null,
-                        "Ignore any colorspace information in the image.", "off"
+                        "Ignore any colorspace information in the image.", "off"  // TODO - need to be able to toggle that according to what's in the pdf file
                     },
                 new string[]
                     {

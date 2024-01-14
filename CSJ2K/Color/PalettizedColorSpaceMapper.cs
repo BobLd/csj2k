@@ -74,8 +74,8 @@ namespace CSJ2K.Color
 		/// <summary>General utility used by ctors </summary>
 		private void  initialize()
 		{
-			if (ncomps != 1 && ncomps != 3)
-				throw new ColorSpaceException("wrong number of components (" + ncomps + ") for palettized image");
+			if (ncomps != 1 && ncomps != 3) // TODO - comps != 4 ?
+                throw new ColorSpaceException("wrong number of components (" + ncomps + ") for palettized image");
 			
 			int outComps = NumComps;
 			outShiftValueArray = new int[outComps];

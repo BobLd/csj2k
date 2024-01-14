@@ -50,6 +50,11 @@ namespace CSJ2K.Util
             return image.As<T>();
         }
 
+        public byte[] GetBytes()
+        {
+            return ToBytesPdfPig(Width, Height, NumberOfComponents, _byteScaling, Data);
+        }
+
         public int[] GetComponent(int number)
         {
             if (number < 0 || number >= NumberOfComponents)
@@ -107,6 +112,55 @@ namespace CSJ2K.Util
                             bytes[j++] = (byte)(scale1 * data[i++]);
                             bytes[j++] = (byte)(scale2 * data[i++]);
                             bytes[j++] = 0xff;
+                        }
+                    }
+                    break;
+                case 4:
+                    {
+                        var scale0 = byteScaling[0];
+                        var scale1 = byteScaling[1];
+                        var scale2 = byteScaling[2];
+                        var scale3 = byteScaling[3];
+                        for (int i = 0, j = 0; i < count;)
+                        {
+                            bytes[j++] = (byte)(scale0 * data[i++]);
+                            bytes[j++] = (byte)(scale1 * data[i++]);
+                            bytes[j++] = (byte)(scale2 * data[i++]);
+                            bytes[j++] = (byte)(scale3 * data[i++]);
+                        }
+                    }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(numberOfComponents), $"Invalid number of components: {numberOfComponents}");
+            }
+
+            return bytes;
+        }
+
+        private static byte[] ToBytesPdfPig(int width, int height, int numberOfComponents, double[] byteScaling, int[] data)
+        {
+            var count = numberOfComponents * width * height;
+            var bytes = new byte[numberOfComponents * width * height];
+
+            switch (numberOfComponents)
+            {
+                case 1:
+                    var scale = byteScaling[0];
+                    for (int i = 0, j = 0; i < count; ++i)
+                    {
+                        bytes[j++] = (byte)(scale * data[i]);
+                    }
+                    break;
+                case 3:
+                    {
+                        var scale0 = byteScaling[0];
+                        var scale1 = byteScaling[1];
+                        var scale2 = byteScaling[2];
+                        for (int i = 0, j = 0; i < count;)
+                        {
+                            bytes[j++] = (byte)(scale0 * data[i++]);
+                            bytes[j++] = (byte)(scale1 * data[i++]);
+                            bytes[j++] = (byte)(scale2 * data[i++]);
                         }
                     }
                     break;
